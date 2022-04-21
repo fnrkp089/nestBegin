@@ -5,10 +5,13 @@ import { PositiveIntPipe } from 'src/pipes/positiveint.pipe';
 import { CatsService } from './cats.service';
 import { CatRequestDto } from './dto/cats.request.dto'
 import { ReadOnlyCatDto } from './dto/cat.response.dto'
+import { AuthService } from 'src/auth/auth.service';
+import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 
 @Controller('cats')
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(private readonly catsService: CatsService,
+              private readonly authservice: AuthService) { }
 
   // cats/
   @ApiOperation({summary: '고양이 아이디로 가져오기'})
@@ -33,8 +36,8 @@ export class CatsController {
   }
 
   @Post('login')
-  login() {
-    return 'login'
+  login(@Body() data: LoginRequestDto) {
+    return this.authservice.jwtLogin(data);
   }
 
   @Post('logout')
