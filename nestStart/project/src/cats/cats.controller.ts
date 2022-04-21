@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, Put, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, Put, Req, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { PositiveIntPipe } from 'src/pipes/positiveint.pipe';
@@ -7,6 +7,9 @@ import { CatRequestDto } from './dto/cats.request.dto'
 import { ReadOnlyCatDto } from './dto/cat.response.dto'
 import { AuthService } from 'src/auth/auth.service';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
+
 
 @Controller('cats')
 export class CatsController {
@@ -14,10 +17,12 @@ export class CatsController {
               private readonly authservice: AuthService) { }
 
   // cats/
-  @ApiOperation({summary: '고양이 아이디로 가져오기'})
-  @Get(':id')
-  getCurrentCat() {
-    return 'current Cat'
+  @ApiOperation({ summary: '고양이 아이디로 가져오기' })
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  getCurrentCat(@CurrentUser() cat) {
+    console.log(cat.readOnlyData)
+    return cat.readOnlyData;
   }
 
   @ApiOperation({ summary: '회원가입' })
