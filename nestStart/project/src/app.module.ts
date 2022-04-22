@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config'
 import { RedPlatformModule } from './red-platform/red-platform.module';
 import { AuthModule } from './auth/auth.module';
+import { CommentsModule } from './comments/comments.module';
 import mongoose from 'mongoose';
 
 
@@ -17,6 +18,7 @@ import mongoose from 'mongoose';
     CatsModule,
     RedPlatformModule,
     AuthModule,
+    CommentsModule,
   ],
   controllers: [AppController], //소비자
   providers: [AppService], //공급자

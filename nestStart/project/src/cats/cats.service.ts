@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt'
 import { Cat } from './cats.schema'
 import { CatRequestDto } from './dto/cats.request.dto';
 import { CatsRepository } from './cats.repository';
+import { throws } from 'assert';
 
 //스키마를 사용하기위해선 의존성 주입을 해줘야한다.
 @Injectable()
@@ -27,6 +28,12 @@ export class CatsService {
     });
 
     return cat.readOnlyData;
+  }
+
+  async getAllCat() {
+    const allCat = await this.catsRepository.findAll();
+    const readonlyCats = allCat.map((cat) => cat.readOnlyData);
+    return readonlyCats;
   }
 
   
